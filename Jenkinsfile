@@ -1,56 +1,26 @@
-pipeline {
+pipeline{
     agent any
     stages {
-        stage('Build') {
-            steps {
-                script {
-                    sh 'g++ pes1ug21cs123.cpp -o output'
-                    echo 'Build Stage Successful'
-                }
-            }
-            post {
-                always {
-                    catchError {
-                        sh 'echo "Build stage completed"'
-                    }
-                }
+        stage('Build'){
+            steps{
+                build 'PES1UG21CS119-1'
+                sh 'g++ pes1ug21cs119.cpp -o output'
             }
         }
-        
-        stage('Test') {
-            steps {
-                script {
-                    sh './output'
-                    echo 'Test Stage Successful'
-                }
-            }
-            post {
-                always {
-                    catchError {
-                        sh 'echo "Test stage completed"'
-                    }
-                }
+        stage('Test'){
+            steps{
+                sh './output1'
             }
         }
-        
-        stage('Deploy') {
-            steps {
-                echo 'Deployment Successful'
-            }
-            post {
-                always {
-                    catchError {
-                        sh 'echo "Deploy stage completed"'
-                    }
-                }
+        stage('Deploy'){
+            steps{
+                echo 'deploy'
             }
         }
     }
-    post {
-        always {
-            catchError {
-                echo 'Pipeline failed'
-            }
+    post{
+        failure{
+            error 'Pipeline failed'
         }
     }
 }
